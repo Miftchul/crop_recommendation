@@ -1,0 +1,46 @@
+<html>
+<body>
+    <h2>Rekomendasi Tanaman</h2>
+    <form id="predictForm">
+        N (Nitrogen): <input type="number" id="N"><br><br>
+        P (Phosphorus): <input type="number" id="P"><br><br>
+        K (Potassium): <input type="number" id="K"><br><br>
+        Temperature: <input type="number" id="temperature"><br><br>
+        Humidity: <input type="number" id="humidity"><br><br>
+        pH: <input type="number" id="ph"><br><br>
+        Rainfall: <input type="number" id="rainfall"><br><br>
+        <button type="submit">Prediksi</button>
+    </form>
+    
+    <script>
+        document.getElementById("predictForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const data = {
+                N: document.getElementById("N").value,
+                P: document.getElementById("P").value,
+                K: document.getElementById("K").value,
+                temperature: document.getElementById("temperature").value,
+                humidity: document.getElementById("humidity").value,
+                ph: document.getElementById("ph").value,
+                rainfall: document.getElementById("rainfall").value
+            };
+            
+            <!-- Pengiriman Data -->
+            fetch("http://127.0.0.1:5000/predict", {
+                method: "POST",  // Metode POST
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)  // Data yang dikirim dalam format JSON
+            })
+            
+            .then(response => response.json())
+            .then(result => {
+                alert("Prediksi: " + result.prediction);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
